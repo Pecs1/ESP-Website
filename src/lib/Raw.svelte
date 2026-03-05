@@ -10,29 +10,58 @@
 	export let time;
 	export let isActive;
 
-	// 1. This is the "Cargo Container" for your data
-	let rawData = '0,0,0,0,0,0,0:0:0,0'; // Default state
 
-	// 2. Reactive variables (they update automatically when rawData changes)
-	$: parts = rawData.split(',');
-	$: latitude = parts[0];
-	$: longitude = parts[1];
-	$: speed = parts[2];
-	$: altitude = parts[3];
-	$: usedSats = parts[4];
-	$: accuracy = parts[5];
-	$: time = parts[6];
-	$: isActive = parts[7] === '1';
+	let telemetryBuffer = [];
+	let currentIndex = 0;
 
-	// 3. The "Fetcher" - we will point this at your PHP file soon
-	async function fetchTelemetry() {
-		// For now, we just log to show it's working
-		console.log('Fetching new data...');
-		// rawData = await fetch('your-api-url').then(r => r.text());
+async function refreshBuffer() {
+    // Adding ?t=[timestamp] ensures the browser asks the server for a fresh copy
+    const res = await fetch(`/data.json?t=${Date.now()}`); 
+    const newData = await res.json();
+    
+    // Simple check: only reset if the data is actually different or exists
+    if (newData && newData.length > 0) {
+        telemetryBuffer = newData;
+        currentIndex = 0;
+        updateUI();
+    }
+}
+
+	function updateUI() {
+		if (currentIndex >= telemetryBuffer.length) {
+        	console.log("Waiting for fresh data batch...");
+        	return; // Stop the function here so we don't crash
+    	}
+
+		if (telemetryBuffer.length > 0 && currentIndex < telemetryBuffer.length) {
+			const row = telemetryBuffer[currentIndex];
+			
+			latitude = row.lat;
+			longitude = row.lng;
+			speed = row.vel;
+			altitude = row.alt;
+			usedSats = row.usat;
+			accuracy = row.accu;
+			time = row.time;
+			isActive = row.active
+
+			currentIndex++; 
+		}
 	}
 
 	onMount(() => {
-		const interval = setInterval(fetchTelemetry, 60000); // Every minute
-		return () => clearInterval(interval);
+		refreshBuffer(); // Get the first batch immediately
+
+		// Timer 1: Every 60s, get a fresh batch from the server
+		const batchInterval = setInterval(refreshBuffer, 60000);
+
+		// Timer 2: Every 10s, move to the next row in the current batch
+		const playInterval = setInterval(updateUI, 10000);
+
+		return () => {
+			clearInterval(batchInterval);
+			clearInterval(playInterval);
+		};
 	});
+
 </script>
