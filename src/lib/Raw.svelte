@@ -10,32 +10,31 @@
 	export let time;
 	export let isActive;
 
-
 	let telemetryBuffer = [];
 	let currentIndex = 0;
 
-async function refreshBuffer() {
-    // Adding ?t=[timestamp] ensures the browser asks the server for a fresh copy
-    const res = await fetch(`/data.json?t=${Date.now()}`); 
-    const newData = await res.json();
-    
-    // Simple check: only reset if the data is actually different or exists
-    if (newData && newData.length > 0) {
-        telemetryBuffer = newData;
-        currentIndex = 0;
-        updateUI();
-    }
-}
+	async function refreshBuffer() {
+		// Adding ?t=[timestamp] ensures the browser asks the server for a fresh copy
+		const res = await fetch(`/data.json?t=${Date.now()}`);
+		const newData = await res.json();
+
+		// Simple check: only reset if the data is actually different or exists
+		if (newData && newData.length > 0) {
+			telemetryBuffer = newData;
+			currentIndex = 0;
+			updateUI();
+		}
+	}
 
 	function updateUI() {
 		if (currentIndex >= telemetryBuffer.length) {
-        	console.log("Waiting for fresh data batch...");
-        	return; // Stop the function here so we don't crash
-    	}
+			console.log('Waiting for fresh data batch...');
+			return; // Stop the function here so we don't crash
+		}
 
 		if (telemetryBuffer.length > 0 && currentIndex < telemetryBuffer.length) {
 			const row = telemetryBuffer[currentIndex];
-			
+
 			latitude = row.lat;
 			longitude = row.lng;
 			speed = row.vel;
@@ -43,9 +42,9 @@ async function refreshBuffer() {
 			usedSats = row.usat;
 			accuracy = row.accu;
 			time = row.time;
-			isActive = row.active
+			isActive = row.active;
 
-			currentIndex++; 
+			currentIndex++;
 		}
 	}
 
@@ -63,5 +62,4 @@ async function refreshBuffer() {
 			clearInterval(playInterval);
 		};
 	});
-
 </script>
