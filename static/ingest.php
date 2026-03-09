@@ -23,7 +23,7 @@ $newPoints = [];
 
 foreach ($rows as $row) {
     $parts = explode(',', trim($row));
-    if (count($parts) >= 8) {
+    if (count($parts) >= 7) {
         $newPoints[] = [
             "lat"    => (float)$parts[0],
             "lng"    => (float)$parts[1],
@@ -32,7 +32,6 @@ foreach ($rows as $row) {
             "usat"   => (int)$parts[4],
             "accu"   => (float)$parts[5],
             "time"   => htmlspecialchars($parts[6]),
-            "active" => (int)$parts[7]
         ];
     }
 }

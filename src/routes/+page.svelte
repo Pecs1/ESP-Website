@@ -52,7 +52,7 @@
 				<p><strong>Speed:</strong> {speed} m/s</p>
 				<p><strong>Accuracy:</strong> {accuracy}</p>
 				<p><strong>Used Satellites:</strong> {usedSats}</p>
-				<p><strong>Time:</strong> {time}</p>
+				<p><strong>Time:</strong> {time} UTC</p>
 			</div>
 			<div class="data-logs">
 				<h1><strong><centre>Telemetry log</centre></strong></h1>
