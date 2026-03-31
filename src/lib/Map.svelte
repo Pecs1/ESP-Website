@@ -14,27 +14,22 @@
 	import { interpolateRainbow } from 'd3-scale-chromatic';
 
 	import pointerIcon from '$lib/assets/pointer.svg';
+	import { currentPoint, pathHistory } from './telemetryStore.js';
 
 	let map;
 
-	const markerLocations = [
-		[29.8283, -96.5795],
-		[37.8283, -90.5795],
-		[43.8283, -102.5795],
-		[48.4, -122.5795],
-		[43.6, -79.5795],
-		[36.8283, -100.5795],
-		[38.4, -122.5795]
-	];
+	// This scales the colors based on how many points are in your history
+	$: colors = scaleSequential(interpolateRainbow).domain([0, $pathHistory.length - 1]);
 
-	const colors = scaleSequential(interpolateRainbow).domain([0, markerLocations.length - 1]);
-	const lines = markerLocations.slice(1).map((latLng, i) => {
-		let prev = markerLocations[i];
+	// This creates the colored segments for the path reactively
+	$: lines = $pathHistory.slice(1).map((latLng, i) => {
+		let prev = $pathHistory[i];
 		return {
 			latLngs: [prev, latLng],
 			color: colors(i)
 		};
 	});
+
 
 	export let initialView;
 
@@ -46,6 +41,12 @@
 			map.invalidateSize();
 		}
 	}
+
+	// Follow the latest point automatically if the view updates
+	$: if (map && $currentPoint.lat) {
+		map.setView([$currentPoint.lat, $currentPoint.lng], map.getZoom());
+	}
+
 
 	$: if (map && initialView) {
 		// This forces Leaflet to fly to the new coordinates
@@ -65,7 +66,7 @@
 
 <Leaflet bind:map view={initialView} zoom={10}>
 	{#if eye}
-		{#each markerLocations as latLng}
+		{#each $pathHistory as latLng}
 			<Marker {latLng} width={30} height={30}>
 				<svg viewBox="0 0 24 24" style="width:30px; height:30px">
 					<image href={pointerIcon} width="24" height="24" />
@@ -76,7 +77,7 @@
 
 	{#if showLines}
 		{#each lines as { latLngs, color }}
-			<Polyline {latLngs} {color} opacity={0.5} />
+			<Polyline latLngs={$pathHistory} {color} opacity={0.5} />
 		{/each}
 	{/if}
 </Leaflet>

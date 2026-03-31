@@ -1,32 +1,15 @@
 <script lang="ts">
 	import Map from '$lib/Map.svelte';
-	import Raw from '$lib/Raw.svelte';
 	import Geolocation from '$lib/Geolocation.svelte';
+	import Raw from '$lib/Raw.svelte';
 
-	let latitude;
-	let longitude;
-	let speed;
-	let altitude;
-	let usedSats;
-	let accuracy;
-	let time;
-	let isActive;
+	import { currentPoint, isActive } from '$lib/telemetryStore.js';
 
 	let sharedView;
 </script>
 
-<Raw
-	bind:latitude
-	bind:longitude
-	bind:speed
-	bind:altitude
-	bind:usedSats
-	bind:accuracy
-	bind:time
-	bind:isActive
-/>
-
 <Geolocation bind:initialView={sharedView} />
+<Raw />
 
 <div class="dashboard-root">
 	<div class="nav-bar">
@@ -35,7 +18,7 @@
 			<span class="disclaimer">Data is fetched automatically every minute</span>
 		</div>
 		<div class="status">
-			{isActive ? 'Active' : 'Inactive'}
+			{$isActive ? 'Active' : 'Inactive'}
 			<!-- <p class="pulse-dot"></p> -->
 		</div>
 	</div>
@@ -46,13 +29,13 @@
 		<div class="general-data">
 			<div class="data-display">
 				<h1><strong><centre>Telemetry Data</centre></strong></h1>
-				<p><strong>Latitude:</strong> {latitude}</p>
-				<p><strong>Longitude:</strong> {longitude}</p>
-				<p><strong>Altitude:</strong> {altitude} m</p>
-				<p><strong>Speed:</strong> {speed} m/s</p>
-				<p><strong>Accuracy:</strong> {accuracy}</p>
-				<p><strong>Used Satellites:</strong> {usedSats}</p>
-				<p><strong>Time:</strong> {time} UTC</p>
+				<p><strong>Latitude:</strong> {$currentPoint.lat}</p>
+				<p><strong>Longitude:</strong> {$currentPoint.lng}</p>
+				<p><strong>Altitude:</strong> {$currentPoint.alt} m</p>
+				<p><strong>Speed:</strong> {$currentPoint.vel} m/s</p>
+				<p><strong>Accuracy:</strong> {$currentPoint.accu}</p>
+				<p><strong>Used Satellites:</strong> {$currentPoint.usat}</p>
+				<p><strong>Time:</strong> {$currentPoint.time} UTC</p>
 			</div>
 			<div class="data-logs">
 				<h1><strong><centre>Telemetry log</centre></strong></h1>

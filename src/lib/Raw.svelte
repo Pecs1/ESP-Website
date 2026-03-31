@@ -1,97 +1,64 @@
-<script lang="ts">
-	import { onMount, tick } from 'svelte';
+<script>
+    import { onMount } from 'svelte';
+    import { currentPoint, pathHistory, isActive } from '$lib/telemetryStore.js';
 
-	export let latitude = 0;
-	export let longitude = 0;
-	export let speed = 0;
-	export let altitude = 0;
-	export let usedSats = 0;
-	export let accuracy = 0;
-	export let time = '00:00:00';
-	export let isActive = 0;
+    let playbackQueue = [];
+    let lastId = 0;
 
-	let telemetryBuffer = [];
-	let currentIndex = 0;
-	let lastBatchLatestTime = null;
+    async function fetchNewData() {
+        try {
+            const res = await fetch(`/api.php?mode=buffer&last_id=${lastId}`);
+            const data = await res.json();
+            if (data.length > 0) {
+                lastId = data[data.length - 1].id;
+                playbackQueue = [...playbackQueue, ...data];
+            }
+        } catch (e) {
+            console.error("Fetch error:", e);
+            isActive.set(false); // Set inactive on network failure
+        }
+    }
 
-	async function refreshBuffer() {
-		// Cache busting fetch to ensure fresh data
-		const res = await fetch(`/data.json?t=${Date.now()}`);
-		const newData = await res.json();
-
-		if (newData && newData.length > 0) {
-			const latestTimeInNewData = newData[newData.length - 1].time;
-
-			// Only process if the batch is new
-			if (latestTimeInNewData !== lastBatchLatestTime) {
-				telemetryBuffer = newData;
-				lastBatchLatestTime = latestTimeInNewData;
-
-				// Look for the "bookmark" in the newly fetched data
-				const savedTime = localStorage.getItem('last_telemetry_time');
-				if (savedTime) {
-					const foundIndex = newData.findIndex((row) => row.time === savedTime);
-					// Start at the next record after the one we last saw
-					currentIndex = foundIndex !== -1 ? foundIndex + 1 : 0;
-				} else {
-					currentIndex = 0;
-				}
-
-				if (currentIndex < telemetryBuffer.length) {
-					isActive = 1;
-					await tick();
-					updateUI();
-				} else {
-					isActive = 0;
-				}
-			}
-		}
-	}
-
-	function updateUI() {
-		// Check if we are out of data first
-		if (currentIndex >= telemetryBuffer.length) {
-			isActive = 0; // Explicitly set to inactive
-			console.log('Waiting for fresh data batch...');
-			return;
-		}
-
-		isActive = 1;
-		const row = telemetryBuffer[currentIndex];
-
-		// Update the component's exported props
-		latitude = row.lat;
-		longitude = row.lng;
-		speed = row.vel;
-		altitude = row.alt;
-		usedSats = row.usat;
-		accuracy = row.accu;
-		if (row.time) {
-			// format it directly to avoid undeclared variable errors
-			time = row.time
-				.split(':')
-				.map((unit) => unit.padStart(2, '0'))
-				.join(':');
-		}
-
-		// Save the timestamp of this row as the new bookmark
-		localStorage.setItem('last_telemetry_time', row.time);
-
-		currentIndex++;
-	}
+    function moveNext() {
+        if (playbackQueue.length > 0) {
+            const next = playbackQueue.shift();
+            
+            // Broadcast the data
+            currentPoint.set(next);
+            pathHistory.update(h => [...h, [next.lat, next.lng]]);
+            
+            // Mark as active since we just processed a point
+            isActive.set(true);
+        } else {
+            // If the buffer is empty, we are no longer "actively" moving
+            isActive.set(false);
+        }
+    }
 
 	onMount(() => {
-		refreshBuffer();
+		// Create an internal async function so onMount stays synchronous
+		const initSync = async () => {
+			try {
+				const res = await fetch('/api.php?mode=log');
+				const existingData = await res.json();
+				if (existingData.length > 0) {
+					// Set the lastId to the highest ID currently in the DB
+					const latestEntry = existingData[existingData.length - 1];
+					lastId = latestEntry.id || 0; 
+				}
+			} catch (e) {
+				console.error("Initial sync failed:", e);
+			}
+		};
 
-		// Check for new server data every minute
-		const batchInterval = setInterval(refreshBuffer, 60000);
+		initSync(); // Run the initial jump to the latest ID
 
-		// Advance the UI every 10 seconds
-		const playInterval = setInterval(updateUI, 10000);
-
+		const fetchTimer = setInterval(fetchNewData, 60000);
+		const moveTimer = setInterval(moveNext, 10000);
+		
 		return () => {
-			clearInterval(batchInterval);
-			clearInterval(playInterval);
+			clearInterval(fetchTimer);
+			clearInterval(moveTimer);
 		};
 	});
 </script>

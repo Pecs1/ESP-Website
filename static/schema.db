@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS telemetry (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    data_type TEXT DEFAULT 'gps',
+    lat REAL,
+    lng REAL,
+    vel REAL,
+    alt REAL,
+    usat INTEGER,
+    accu REAL,
+    time TEXT,
+    extra TEXT,
+    server_time DATETIME DEFAULT CURRENT_TIMESTAMP
+);

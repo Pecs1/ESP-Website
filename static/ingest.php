@@ -1,85 +1,77 @@
 <?php
 include('config.php');
 $expected_key = $config['api_key'];
+$db_path = '/var/www/html/schema.db';
 
-// 1. Security Check
-// Use $_SERVER instead of getallheaders() as it's more reliable across different firewalls
-$received_key = $_SERVER['HTTP_X_API_KEY'] ?? '';
+try {
+    $db = new PDO("sqlite:$db_path");
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-if ($received_key !== $expected_key) {
-    header('HTTP/1.1 403 Forbidden');
-}
+    $db->exec("CREATE TABLE IF NOT EXISTS telemetry (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    data_type TEXT DEFAULT 'gps',
+    lat REAL,
+    lng REAL,
+    vel REAL,
+    alt REAL,
+    usat INTEGER,
+    accu REAL,
+    time TEXT,
+    extra TEXT,
+    server_time DATETIME DEFAULT CURRENT_TIMESTAMP
+)");
+    
+    // Security Check
+    $received_key = $_SERVER['HTTP_X_API_KEY'] ?? '';
+    if ($received_key !== $config['api_key']) {
+        header('HTTP/1.1 403 Forbidden');
+        exit("Unauthorized");
+    }
 
-if ($received_key == $expected_key) {
+    if ($received_key == $expected_key) {
     header('HTTP/1.1 200 OK');
-}
-
-$rawPayload = trim(file_get_contents('php://input'));
-if (empty($rawPayload)) die("No data");
-
-// Split the payload into individual rows using the semicolon
-$rows = explode(';', $rawPayload);
-$newPoints = [];
-
-foreach ($rows as $row) {
-    $parts = explode(',', trim($row));
-    if (count($parts) >= 7) {
-        $newPoints[] = [
-            "lat"    => (float)$parts[0],
-            "lng"    => (float)$parts[1],
-            "vel"    => (float)$parts[2],
-            "alt"    => (float)$parts[3],
-            "usat"   => (int)$parts[4],
-            "accu"   => (float)$parts[5],
-            "time"   => htmlspecialchars($parts[6]),
-        ];
     }
-}
 
-if (empty($newPoints)) die("No valid points found");
+    $rawPayload = trim(file_get_contents('php://input'));
+    if (empty($rawPayload)) die("No data");
 
-// Since the ESP32 already buffers 6 points, we can just overwrite data.json 
-// with the latest 6-point batch to keep the dashboard current.
-$dataFile = 'data.json';
-if (file_put_contents($dataFile, json_encode($newPoints))) {
-    echo "Successfully updated data.json with " . count($newPoints) . " points.";
-} else {
+    $rows = explode(';', $rawPayload);
+    $stmt = $db->prepare("INSERT INTO telemetry (lat, lng, vel, alt, usat, accu, time, extra, server_time) 
+                      VALUES (:lat, :lng, :vel, :alt, :usat, :accu, :time, :extra, :server_time)");
+
+    $db->beginTransaction();
+
+    foreach ($rows as $row) {
+        $parts = explode(',', trim($row));
+        if (count($parts) >= 7) {
+            // Fix the time formatting
+            $rawTime = trim($parts[6]);
+            $timeParts = explode(':', $rawTime);
+            
+            if (count($timeParts) === 3) {
+                $formattedTime = sprintf('%02d:%02d:%02d', $timeParts[0], $timeParts[1], $timeParts[2]);
+            } else {
+                $formattedTime = htmlspecialchars($rawTime);
+            }
+
+            $stmt->execute([
+                ':lat'  => (float)$parts[0],
+                ':lng'  => (float)$parts[1],
+                ':vel'  => (float)$parts[2],
+                ':alt'  => (float)$parts[3],
+                ':usat' => (int)$parts[4],
+                ':accu' => (float)$parts[5],
+                ':time' => $formattedTime,
+                ':extra'       => null,
+                ':server_time' => date('Y-m-d H:i:s')
+            ]);
+        }
+    }
+    $db->commit();
+    echo "Success";
+
+} catch (PDOException $e) {
     header('HTTP/1.1 500 Internal Server Error');
-    echo "File write failed. Check permissions.";
+    echo "Database error: " . $e->getMessage();
 }
-
-// Open file for reading and writing
-$fp = fopen($bufferFile, "c+"); 
-
-// Acquire an exclusive lock (Wait if another request is using it)
-if (flock($fp, LOCK_EX)) {
-    // Read current content
-    $content = stream_get_contents($fp);
-    $currentBuffer = !empty($content) ? json_decode($content, true) : [];
-    
-    // Add new data
-    $currentBuffer[] = $newRow;
-    
-    if (count($currentBuffer) >= 6) {
-        // Push to main data file and clear buffer
-        file_put_contents('data.json', json_encode($currentBuffer));
-        ftruncate($fp, 0); 
-        rewind($fp);
-        fwrite($fp, json_encode([]));
-        echo "Batch pushed to data.json";
-    } else {
-        // Save back to buffer
-        ftruncate($fp, 0);
-        rewind($fp);
-        fwrite($fp, json_encode($currentBuffer));
-        echo "Point stored in buffer (" . count($currentBuffer) . "/6)";
-    }
-    
-    fflush($fp);            // flush output before releasing lock
-    flock($fp, LOCK_UN);    // release the lock
-} else {
-    echo "Could not lock file";
-}
-
-fclose($fp);
 ?>
