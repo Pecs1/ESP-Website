@@ -68,7 +68,7 @@
 		{#each markerLocations as latLng}
 			<Marker {latLng} width={30} height={30}>
 				<svg viewBox="0 0 24 24" style="width:30px; height:30px">
-					<image href="{pointerIcon}" width="24" height="24" />
+					<image href={pointerIcon} width="24" height="24" />
 				</svg>
 			</Marker>
 		{/each}
