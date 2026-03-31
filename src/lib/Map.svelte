@@ -5,20 +5,15 @@
 	For comparison, the original REPL that implemented this without Renderless components is here: https://svelte.dev/repl/62271e8fda854e828f26d75625286bc3?version=3.29.7
 	
 	You can also find a full application implementing these techniques at https://github.com/dimfeld/svelte-leaflet-demo
-	
-	Any questions? Ask me at dimfeld on Twitter!
-	
-	Thanks to heroicons.dev for the icons used here.
 	*/
 
 	import Leaflet from './Leaflet.svelte';
-	//	import Control from './Control.svelte';
 	import Marker from './Marker.svelte';
-	//	import Popup from './Popup.svelte';
 	import Polyline from './Polyline.svelte';
-	//	import MapToolbar from './MapToolbar.svelte';
 	import { scaleSequential } from 'd3-scale';
 	import { interpolateRainbow } from 'd3-scale-chromatic';
+
+	import pointerIcon from '$lib/assets/pointer.svg';
 
 	let map;
 
@@ -72,16 +67,9 @@
 	{#if eye}
 		{#each markerLocations as latLng}
 			<Marker {latLng} width={30} height={30}>
-				<svg
-					style="width:30px;height:30px"
-					fill="none"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					><path d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg
-				>
+				<svg viewBox="0 0 24 24" style="width:30px; height:30px">
+					<image href="{pointerIcon}" width="24" height="24" />
+				</svg>
 			</Marker>
 		{/each}
 	{/if}
