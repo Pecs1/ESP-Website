@@ -1,5 +1,5 @@
 <?php
-$config = include('config.php');
+include('config.php');
 $expected_key = $config['api_key'];
 
 // 1. Security Check
