@@ -1,42 +1,33 @@
-# sv
+# ESP-Website
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Project to get telemetry from a [ESP32 boards](https://github.com/Pecs1/ESP-telemetry#) for [Shell eco-marathon](https://www.shellecomarathon.com/) competetion
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+## Installing
 
 ```sh
-# create a new project
-npx sv create my-app
+git clone https://github.com/Pecs1/ESP-Website.git
+cd ESP-Website
+
+# Install Dependencies
+pnpm i
+
+# Start dev server 
+pnpm run dev
+# Or start the server and open in new browser tab
+pnpm run dev --open
+
+
+# Build for production version of the website
+pnpm run build
+# You will find it in /build directory
 ```
 
-To recreate this project with the same configuration:
+## Credits
 
-```sh
-# recreate this project
-pnpm dlx sv create --template minimal --types jsdoc --add prettier tailwindcss="plugins:none" --install pnpm esp-web
-```
+- Icons are provided by [Flaticon](https://www.flaticon.com)
+  - `favicon.svg`: [Remote sensing satelite](https://www.flaticon.com/free-icon/remote-sensing-satellite_14106352) icon made by **gravisio**
+  - `favicon_old.svg`: [Remote sensing satelite](https://www.flaticon.com/free-icon/remote-sensing-satellite_14114645) icon made by **gravisio**
+  - `pointer.svg`: [Placeholder](https://www.flaticon.com/free-icon/placeholder_684908) icon made by **Freepik**
+- Map components (such as leaflet) i took from [Leaflet in Svelte with Renderless Components](https://svelte.dev/playground/36a84bbe2cf74c899ada6380e6e632d8?version=5.53.3)
 
-## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
