@@ -31,11 +31,12 @@
 				<h1><strong><centre>Telemetry Data</centre></strong></h1>
 				<p><strong>Latitude:</strong> {$currentPoint.lat}</p>
 				<p><strong>Longitude:</strong> {$currentPoint.lng}</p>
-				<p><strong>Altitude:</strong> {$currentPoint.alt} m</p>
-				<p><strong>Speed:</strong> {$currentPoint.vel} m/s</p>
-				<p><strong>Accuracy:</strong> {$currentPoint.accu}</p>
+				<p><strong>Altitude:</strong> {$currentPoint.alt}m</p>
+				<p><strong>Speed:</strong> {$currentPoint.vel}km/h</p>
+				<p><strong>Accuracy:</strong> {$currentPoint.accu}m</p>
 				<p><strong>Used Satellites:</strong> {$currentPoint.usat}</p>
-				<p><strong>Time:</strong> {$currentPoint.time} UTC</p>
+				<p><strong>GPS Polled at:</strong> {$currentPoint.time} UTC</p>
+				<p><strong>Received on Server:</strong> {$currentPoint.server_time} UTC</p>
 			</div>
 			<div class="data-logs">
 				<h1><strong><centre>Telemetry log</centre></strong></h1>
