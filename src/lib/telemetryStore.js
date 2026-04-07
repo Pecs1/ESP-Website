@@ -8,7 +8,7 @@ export const currentPoint = writable({
     alt: 0,
     accu: 0,
     usat: 0,
-    time: '00:00:00',
+    esp_time: '00:00:00',
     extra_data: {},
     server_time: '00:00:00'
 });

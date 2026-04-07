@@ -35,7 +35,7 @@
 				<p><strong>Speed:</strong> {$currentPoint.vel}km/h</p>
 				<p><strong>Accuracy:</strong> {$currentPoint.accu}m</p>
 				<p><strong>Used Satellites:</strong> {$currentPoint.usat}</p>
-				<p><strong>GPS Polled at:</strong> {$currentPoint.time} UTC</p>
+				<p><strong>GPS Polled at:</strong> {$currentPoint.esp_time} UTC</p>
 				<p><strong>Received on Server:</strong> {$currentPoint.server_time} UTC</p>
 			</div>
 			<div class="data-logs">
