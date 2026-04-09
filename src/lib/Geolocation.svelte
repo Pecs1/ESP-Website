@@ -1,9 +1,10 @@
 <script>
 	import { onMount } from 'svelte';
+	import { initialView } from '$lib/telemetryStore.js';
 
 	// center of the EU
 	const fallback = [49.843, 9.902];
-	export let initialView = fallback;
+	let view = fallback;
 
 	onMount(() => {
 		console.log('Attempting geolocation...');
@@ -11,17 +12,19 @@
 		if ('geolocation' in navigator) {
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
-					initialView = [position.coords.latitude, position.coords.longitude];
-					console.log('Success:', initialView);
+					view = [position.coords.latitude, position.coords.longitude];
+					console.log('Success:', view);
 				},
 				(error) => {
 					console.warn(`OS/Hardware rejected geo: ${error.message}`);
-					initialView = fallback;
+					view = fallback;
 				},
 				{ timeout: 3000 }
 			);
 		} else {
-			initialView = fallback;
+			view = fallback;
 		}
+
+		initialView.set(view);
 	});
 </script>

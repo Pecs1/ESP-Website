@@ -15,5 +15,5 @@ export const currentPoint = writable({
 
 // This holds the history of points for your Leaflet trail
 export const pathHistory = writable([]);
-
 export const isActive = writable(false);
+export const initialView = writable([0, 0]);

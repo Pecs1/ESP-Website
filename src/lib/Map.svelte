@@ -14,7 +14,7 @@
 	import { interpolateRainbow } from 'd3-scale-chromatic';
 
 	import pointerIcon from '$lib/assets/pointer.svg';
-	import { currentPoint, pathHistory } from './telemetryStore.js';
+	import { currentPoint, pathHistory, initialView } from './telemetryStore.js';
 
 	let map;
 
@@ -29,9 +29,6 @@
 			color: colors(i)
 		};
 	});
-
-
-	export let initialView;
 
 	let eye = true;
 	let showLines = true;
@@ -48,9 +45,9 @@
 	}
 
 
-	$: if (map && initialView) {
+	$: if (map && {$initialView}) {
 		// This forces Leaflet to fly to the new coordinates
-		map.setView(initialView, map.getZoom());
+		map.setView({$initialView}, map.getZoom());
 	}
 </script>
 
@@ -64,7 +61,7 @@
 	crossorigin=""
 />
 
-<Leaflet bind:map view={initialView} zoom={10}>
+<Leaflet bind:map view={$initialView} zoom={16}>
 	{#if eye}
 		{#each $pathHistory as latLng}
 			<Marker {latLng} width={30} height={30}>

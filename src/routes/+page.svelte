@@ -2,13 +2,10 @@
 	import Map from '$lib/Map.svelte';
 	import Geolocation from '$lib/Geolocation.svelte';
 	import Raw from '$lib/Raw.svelte';
-
 	import { currentPoint, isActive } from '$lib/telemetryStore.js';
-
-	let sharedView;
 </script>
 
-<Geolocation bind:initialView={sharedView} />
+<Geolocation />
 <Raw />
 
 <div class="dashboard-root">
@@ -24,11 +21,11 @@
 	</div>
 	<div class="data-container">
 		<div class="data-map">
-			<Map initialView={sharedView} />
+			<Map />
 		</div>
 		<div class="general-data">
 			<div class="data-display">
-				<h1><strong><centre>Telemetry Data</centre></strong></h1>
+				<h1><strong>Telemetry Data</strong></h1>
 				<p><strong>Latitude:</strong> {$currentPoint.lat}</p>
 				<p><strong>Longitude:</strong> {$currentPoint.lng}</p>
 				<p><strong>Altitude:</strong> {$currentPoint.alt}m</p>
