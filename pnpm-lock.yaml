@@ -35,13 +35,13 @@ importers:
         version: 4.2.2(vite@7.3.5(jiti@2.6.1)(lightningcss@1.32.0))
       prettier:
         specifier: ^3.8.1
-        version: 3.8.4
+        version: 3.9.3
       prettier-plugin-svelte:
         specifier: ^3.5.1
-        version: 3.5.2(prettier@3.8.4)(svelte@5.56.3(@typescript-eslint/types@8.58.0))
+        version: 3.5.2(prettier@3.9.3)(svelte@5.56.3(@typescript-eslint/types@8.58.0))
       prettier-plugin-tailwindcss:
         specifier: ^0.8.0
-        version: 0.8.0(prettier-plugin-svelte@3.5.2(prettier@3.8.4)(svelte@5.56.3(@typescript-eslint/types@8.58.0)))(prettier@3.8.4)
+        version: 0.8.0(prettier-plugin-svelte@3.5.2(prettier@3.9.3)(svelte@5.56.3(@typescript-eslint/types@8.58.0)))(prettier@3.9.3)
       svelte:
         specifier: ^5.55.1
         version: 5.56.3(@typescript-eslint/types@8.58.0)
@@ -827,8 +827,8 @@ packages:
       prettier-plugin-svelte:
         optional: true
 
-  prettier@3.8.4:
-    resolution: {integrity: sha512-N2MylSdi48+5N/6S5j+maeHbUSIzzZ5uOcX5Hm4QpV8Dkb1HFjfAKTKX6yNPJQD9AhcT3ifHNB66tWTTJDi11Q==}
+  prettier@3.9.3:
+    resolution: {integrity: sha512-HWmu+K+zvHNpaMfSnYeqdqrDbR16cuIXaPx8WoHaviQkDJh1/0BNtOZmHVQI5jc3wXv0H1yXc9wjvFdXh+n3hQ==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -1438,18 +1438,18 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  prettier-plugin-svelte@3.5.2(prettier@3.8.4)(svelte@5.56.3(@typescript-eslint/types@8.58.0)):
+  prettier-plugin-svelte@3.5.2(prettier@3.9.3)(svelte@5.56.3(@typescript-eslint/types@8.58.0)):
     dependencies:
-      prettier: 3.8.4
+      prettier: 3.9.3
       svelte: 5.56.3(@typescript-eslint/types@8.58.0)
 
-  prettier-plugin-tailwindcss@0.8.0(prettier-plugin-svelte@3.5.2(prettier@3.8.4)(svelte@5.56.3(@typescript-eslint/types@8.58.0)))(prettier@3.8.4):
+  prettier-plugin-tailwindcss@0.8.0(prettier-plugin-svelte@3.5.2(prettier@3.9.3)(svelte@5.56.3(@typescript-eslint/types@8.58.0)))(prettier@3.9.3):
     dependencies:
-      prettier: 3.8.4
+      prettier: 3.9.3
     optionalDependencies:
-      prettier-plugin-svelte: 3.5.2(prettier@3.8.4)(svelte@5.56.3(@typescript-eslint/types@8.58.0))
+      prettier-plugin-svelte: 3.5.2(prettier@3.9.3)(svelte@5.56.3(@typescript-eslint/types@8.58.0))
 
-  prettier@3.8.4: {}
+  prettier@3.9.3: {}
 
   readdirp@4.1.2: {}
 
