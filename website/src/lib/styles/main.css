@@ -1,0 +1,39 @@
+:root {
+     --main: #2c5496;
+     --main-light: #526ca6;
+     --main-dark: #28477d;
+     --main-darker: #131824;
+     --text: #dfe3ef;
+}
+
+body {
+     background-color: var(--main-darker);
+     font-family: Georgia, serif;
+     letter-spacing: normal;
+     cursor: default;
+     user-select: none;
+}
+
+.nav-bar {
+     background-color: var(--main-dark);
+     padding: 0.25rem 1rem;
+     border-radius: 0.5rem;
+     display: flex;
+
+     align-items: center;
+     justify-content: space-between;
+}
+
+h {
+     font-size: 30px;
+}
+
+.title {
+     color: var(--text);
+}
+
+.menu {
+     color: var(--text);
+     margin-top: 3.5px;
+     cursor: pointer;
+}
