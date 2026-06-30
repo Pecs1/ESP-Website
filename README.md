@@ -2,6 +2,11 @@
 
 Project to get telemetry from a [ESP32 boards](https://github.com/Pecs1/ESP-telemetry#) for [Shell eco-marathon](https://www.shellecomarathon.com/) competetion
 
+> [!Caution]
+> Note that this branch is deprecated/obsolete. Please use the main branch instead 
+>
+> Use it on your own risk
+
 ## Installing
 
 ```sh
