@@ -11,7 +11,7 @@ Project to get telemetry from a [ESP32 boards](https://github.com/Pecs1/ESP-tele
 Both local and remote directories live alongside already build website (that can be build manually or downloaded via github releases)
 
 - [local](https://github.com/Pecs1/ESP-Website/local/README.md)
-  - stores components that help 
+  - stores components that help decode the data and put them in a local database
   - can be configured if you would want to send data to a remote website 
 - [remote](https://github.com/Pecs1/ESP-Website/remote/README.md)
   - accepts data via POST request from local
