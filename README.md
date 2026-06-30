@@ -19,6 +19,20 @@ Both local and remote directories live alongside already build website (that can
 - [website](https://github.com/Pecs1/ESP-Website/website/README.md)
   - stores website related components
 
+
+## TODOs:
+
+- [ ] Add leaflet map that accepts GPS coordinates
+  - [ ] Use different colors for each speed level
+- [ ] Detect if the website is local or remote for different capabilities
+- [ ] Improve the UI/UX
+- [ ] Add license/copyright to bottom of the website UI
+- [ ] Add helper components
+  - [ ] to local enviroment
+  - [ ] to remote enviroment
+- [ ] Add changelog
+
+
 ## License
 
    Copyright © 2026 Pecs1
