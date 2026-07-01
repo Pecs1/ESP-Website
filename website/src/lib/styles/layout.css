@@ -1,31 +1,92 @@
 body {
-     background-color: var(--main-darker);
-     font-family: Georgia, serif;
-     letter-spacing: normal;
-     cursor: default;
-     user-select: none;
+	cursor: default;
+	background-color: var(--main-darker);
+	font-family: Georgia, serif;
+	letter-spacing: normal;
+	user-select: none;
 }
 
 .nav-bar {
-     background-color: var(--main-dark);
-     padding: 0.25rem 1rem;
-     border-radius: 0.5rem;
-     display: flex;
+	display: flex;
+	justify-content: space-between;
 
-     align-items: center;
-     justify-content: space-between;
+	align-items: center;
+	border-radius: 0.5rem;
+	background-color: var(--main);
+	padding: 0.25rem 1rem;
 }
 
 h {
-     font-size: 30px;
-}
-
-.title {
-     color: var(--text);
+	color: var(--text);
+	font-size: 30px;
 }
 
 .menu {
-     color: var(--text);
-     margin-top: 3.5px;
-     cursor: pointer;
+	cursor: pointer;
+	margin-top: 3.5px;
+	color: var(--text);
+}
+
+#menu-checkbox,
+.menu-button {
+	display: none;
+}
+
+#menu-checkbox:checked ~ .menu-button {
+	display: grid;
+	outline: none !important;
+	border: none !important;
+}
+
+.menu-options {
+	color: var(--text);
+	font-size: 20px;
+	text-decoration: none; /* why doesnt this wooorkk */
+	text-decoration-line: none;
+	text-decoration-style: none;
+}
+
+.menu-dropdown {
+	position: fixed;
+	right: 0;
+	z-index: 5;
+	margin-top: 0.5rem;
+	margin-right: 0.5rem;
+	margin-left: auto;
+	border: 2px;
+	border-radius: 0.5rem;
+	background-color: var(--main-light);
+
+	width: max-content;
+	/* padding: 0.5rem 1rem; */
+}
+
+.menu-dropdown a {
+	font-size: 24px;
+	text-decoration: none;
+}
+
+.menu-dropdown a:hover {
+	transition: background-color 0.25s ease;
+	border: inherit;
+	border-radius: inherit;
+	background-color: var(--main);
+}
+
+.copyright {
+	position: fixed;
+	bottom: 0.5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	text-align: center;
+}
+
+.copyright a {
+	box-shadow: none !important;
+	border-bottom: none !important;
+	color: var(--text);
+	font-size: 20px;
+	text-decoration: none;
+	text-decoration-line: none;
+	text-decoration-style: none;
 }
