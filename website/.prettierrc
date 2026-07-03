@@ -3,7 +3,7 @@
 	"singleQuote": true,
 	"trailingComma": "none",
 	"printWidth": 100,
-     "cssDeclarationSorterOrder": "concentric-css",
+	"cssDeclarationSorterOrder": "concentric-css",
 	"plugins": ["prettier-plugin-svelte", "prettier-plugin-css-order"],
 	"overrides": [
 		{
