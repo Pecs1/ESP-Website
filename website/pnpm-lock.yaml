@@ -23,13 +23,13 @@ importers:
         version: 7.2.0(svelte@5.56.4)(vite@8.1.4)
       prettier:
         specifier: ^3.9.4
-        version: 3.9.4
+        version: 3.9.5
       prettier-plugin-css-order:
         specifier: ^2.2.0
-        version: 2.2.0(postcss@8.5.16)(prettier@3.9.4)
+        version: 2.2.0(postcss@8.5.16)(prettier@3.9.5)
       prettier-plugin-svelte:
         specifier: ^4.1.1
-        version: 4.1.1(prettier@3.9.4)(svelte@5.56.4)
+        version: 4.1.1(prettier@3.9.5)(svelte@5.56.4)
       svelte:
         specifier: ^5.56.1
         version: 5.56.4
@@ -567,8 +567,8 @@ packages:
       prettier: ^3.0.0
       svelte: ^5.0.0
 
-  prettier@3.9.4:
-    resolution: {integrity: sha512-yWG/o/4oJfo036EKAfK6ACAoDOfHeRHx4tuxkfBZiauURiaSmYwlpOr5LQqKtIkRD2z1PLteme2WoxEnj4tHTg==}
+  prettier@3.9.5:
+    resolution: {integrity: sha512-/FVl766LpUfB5vXgCYOYa0MeV/441Ia99AeICQIQFTY/Nw0roZwULcXpku5i1/m5kt/baz+s4Zogspd839HSMg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -1019,21 +1019,21 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  prettier-plugin-css-order@2.2.0(postcss@8.5.16)(prettier@3.9.4):
+  prettier-plugin-css-order@2.2.0(postcss@8.5.16)(prettier@3.9.5):
     dependencies:
       css-declaration-sorter: 7.4.0(postcss@8.5.16)
       postcss-less: 6.0.0(postcss@8.5.16)
       postcss-scss: 4.0.9(postcss@8.5.16)
-      prettier: 3.9.4
+      prettier: 3.9.5
     transitivePeerDependencies:
       - postcss
 
-  prettier-plugin-svelte@4.1.1(prettier@3.9.4)(svelte@5.56.4):
+  prettier-plugin-svelte@4.1.1(prettier@3.9.5)(svelte@5.56.4):
     dependencies:
-      prettier: 3.9.4
+      prettier: 3.9.5
       svelte: 5.56.4
 
-  prettier@3.9.4: {}
+  prettier@3.9.5: {}
 
   readdirp@4.1.2: {}
 
