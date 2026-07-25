@@ -3,6 +3,9 @@
   "extends": ["config:recommended"],
   "labels": ["Dependencies"],
   "semanticCommits": "disabled",
+  "peerDependencies": {
+    "interdependencyMechanism": "pnpm"
+  },
   "packageRules": [
     {
       "groupName": "GitHub Actions",
@@ -10,7 +13,8 @@
       "pinDigests": true
     },
     {
-      "groupName": "All minor and patch updates",
+      "groupName": "Svelte Minor/Patch Deps",
+      "matchManagers": ["npm"],
       "matchUpdateTypes": ["minor", "patch"],
       "minimumReleaseAge": "5 days"
     }
