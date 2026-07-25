@@ -3,9 +3,6 @@
   "extends": ["config:recommended"],
   "labels": ["Dependencies"],
   "semanticCommits": "disabled",
-  "peerDependencies": {
-    "interdependencyMechanism": "pnpm"
-  },
   "packageRules": [
     {
       "groupName": "GitHub Actions",
