@@ -8,6 +8,10 @@
       "groupName": "GitHub Actions",
       "matchManagers": ["github-actions"],
       "pinDigests": true
+    },
+    {
+      "groupName": "All minor and patch updates",
+      "matchUpdateTypes": ["minor", "patch"]
     }
   ]
 }
