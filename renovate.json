@@ -11,7 +11,8 @@
     },
     {
       "groupName": "All minor and patch updates",
-      "matchUpdateTypes": ["minor", "patch"]
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "5 days"
     }
   ]
 }
